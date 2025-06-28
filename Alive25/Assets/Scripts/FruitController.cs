@@ -34,6 +34,7 @@ public class FruitController : MonoBehaviour
     private Vector3 lastPosition = new Vector3();
     private Vector3 knockbackVelocity;
 
+    private bool isAlive = true;
     private bool isPlayerControlled = false;
     public bool IsPlayerControlled => isPlayerControlled;
     private double lastSprintTime = 0;
@@ -64,10 +65,11 @@ public class FruitController : MonoBehaviour
 
     void Update()
     {
-        if (transform.position.y < config.DeathThreshold)
+        if (transform.position.y < config.DeathThreshold && isAlive)
         {
             isPlayerControlled = false;
             fruitGameMaster.ReportFruitDeath(this);
+            isAlive = false;
         }
 
         Vector3 moveDirection = new Vector3();

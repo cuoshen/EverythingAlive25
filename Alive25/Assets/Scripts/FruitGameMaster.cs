@@ -46,10 +46,14 @@ public class FruitGameMaster : MonoBehaviour
 
         fruits.Remove(dyingFruit);
 
-        int armyID = dyingFruit.ArmyID;
-        if (TryEnableInputForOneFruit(armyID))
+        if (dyingFruit.IsPlayerControlled)
         {
-            Debug.Log("Army " + armyID + " has resurrected! Prepare for war!");
+            // Resurrect
+            int armyID = dyingFruit.ArmyID;
+            if (TryEnableInputForOneFruit(armyID))
+            {
+                Debug.Log("Army " + armyID + " has resurrected! Prepare for war!");
+            }
         }
     }
 }
