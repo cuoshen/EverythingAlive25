@@ -5,13 +5,13 @@ using UnityEngine.InputSystem;
 
 public class FruitController : MonoBehaviour
 {
-
     [SerializeField]
     private FruitConfig config;
 
     private PlayerInput playerInput;
     private CharacterController controller;
     private Vector2 moveInput;
+    private bool isSprinting;
 
     private float verticalVelocity;
 
@@ -23,17 +23,23 @@ public class FruitController : MonoBehaviour
 
     void OnEnable()
     {
-        var moveAction = playerInput.actions["Move"];
+        InputAction moveAction = playerInput.actions["Move"];
         moveAction.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         moveAction.canceled += _ => moveInput = Vector2.zero;
+
+        InputAction sprintAction = playerInput.actions["Sprint"];
+        sprintAction.performed += _ => isSprinting = true;
+        sprintAction.canceled += _ => isSprinting = false;
     }
 
     void Update()
     {
-        Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
+        Vector3 moveDirection = new Vector3();
+        moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
         moveDirection.Normalize();
 
-        Vector3 velocity = moveDirection * config.MoveSpeed;
+        float moveSpeed = isSprinting ? config.SprintSpeed : config.MoveSpeed;
+        Vector3 velocity = moveDirection * moveSpeed;
 
         // Apply gravity
         if (controller.isGrounded && verticalVelocity < 0)

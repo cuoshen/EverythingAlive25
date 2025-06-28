@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88ce9bc42176b7409f9488c838f37c2, type: 3}
   m_Name: GlobalFruitConfig
   m_EditorClassIdentifier: 
-  MoveSpeed: 15
+  MoveSpeed: 5
+  SprintSpeed: 15
   Gravity: -9.81
   TerminalVelocity: -50
