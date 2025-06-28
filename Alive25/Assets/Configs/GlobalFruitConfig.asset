@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e88ce9bc42176b7409f9488c838f37c2, type: 3}
   m_Name: GlobalFruitConfig
   m_EditorClassIdentifier: 
-  MoveSpeed: 5
+  MoveSpeed: 3
   SprintSpeed: 15
-  Gravity: -9.81
+  Gravity: -9.8
   TerminalVelocity: -50
   SprintCooldown: 2
-  SprintDuration: 0.3
+  SprintDuration: 0.6
   KnockbackDecay: 20
-  PlayerActionMaps: {fileID: -944628639613478452, guid: d7a6ebcd82989384e89360a5ad0c9a87,
-    type: 3}
+  DeathThreshold: -20
   CollisionVfx: {fileID: 0}
   CollisionAudio: {fileID: 0}
