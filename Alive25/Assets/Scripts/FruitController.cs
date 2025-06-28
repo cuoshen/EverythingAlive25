@@ -1,27 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class FruitController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
 
+    [SerializeField]
+    private float moveSpeed = 5f;
+
+    private PlayerInput playerInput;
     private CharacterController controller;
+    private Vector2 moveInput;
 
-    void Start()
+    void Awake()
     {
         controller = GetComponent<CharacterController>();
+        playerInput = GetComponent<PlayerInput>();
+    }
+
+    void OnEnable()
+    {
+        var moveAction = playerInput.actions["Move"];
+        moveAction.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        moveAction.canceled += _ => moveInput = Vector2.zero;
     }
 
     void Update()
     {
-        float horizontal = Input.GetAxis("Horizontal"); // A/D or Left/Right
-        float vertical = Input.GetAxis("Vertical");     // W/S or Up/Down
+        Vector3 move = new Vector3(moveInput.x, 0f, moveInput.y);
+        if (move.sqrMagnitude > 1f)
+            move.Normalize();
 
-        Vector3 moveDirection = new Vector3(horizontal, 0, vertical);
-        moveDirection.Normalize(); // Normalize to avoid faster diagonal movement
-
-        // World space movement
-        controller.Move(moveDirection * moveSpeed * Time.deltaTime);
+        controller.Move(move * moveSpeed * Time.deltaTime);
     }
 }
