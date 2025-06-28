@@ -23,6 +23,12 @@ public class FruitController : MonoBehaviour
 
     private float verticalVelocity;
 
+    private Vector3 currentVelocity = new Vector3();
+    public Vector3 CurrentVelocity => currentVelocity;
+    private Vector3 lastPosition = new Vector3();
+    private Vector3 knockbackVelocity;
+    public float knockbackDecay = 20f; // how fast knockback slows down
+
     private bool isPlayerControlled = true;
     private double lastSprintTime = 0;
 
@@ -90,6 +96,17 @@ public class FruitController : MonoBehaviour
         velocity.y = verticalVelocity;
 
         controller.Move(velocity * Time.deltaTime);
+
+        // Apply additional knockback
+        if (knockbackVelocity.sqrMagnitude > 0.01f)
+        {
+            controller.Move(knockbackVelocity * Time.deltaTime);
+            knockbackVelocity = Vector3.Lerp(knockbackVelocity, Vector3.zero, knockbackDecay * Time.deltaTime);
+        }
+
+        // Update player velocity based on last frame
+        currentVelocity = (transform.position - lastPosition) / Time.deltaTime;
+        lastPosition = transform.position;
     }
 
     void OnControllerColliderHit(ControllerColliderHit hit)
@@ -97,8 +114,15 @@ public class FruitController : MonoBehaviour
         FruitController otherPlayer = hit.collider.GetComponent<FruitController>();
         if (otherPlayer != null)
         {
-            Debug.Log("Run into another player");
             PlayEffectsAtPlayerCollision(hit.point);
+
+            // Knock back
+            Vector3 relativeVelocity = currentVelocity - otherPlayer.currentVelocity;
+            Vector3 knockbackDir = (transform.position - otherPlayer.transform.position).normalized;
+
+            // Apply knockback in both directions
+            knockbackVelocity += knockbackDir * relativeVelocity.magnitude;
+            otherPlayer.knockbackVelocity -= knockbackDir * relativeVelocity.magnitude;
         }
         else
         {
