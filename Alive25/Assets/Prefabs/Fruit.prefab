@@ -142,6 +142,8 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: c3389f44e85b3f6449a7189224d73af5, type: 2}
   fruitTransform: {fileID: 2901492309550476847}
   fruitAudioSource: {fileID: 2016125919166781903}
+  armyID: 0
+  playerInput: {fileID: 5866929022058150305}
 --- !u!114 &5866929022058150305
 MonoBehaviour:
   m_ObjectHideFlags: 0

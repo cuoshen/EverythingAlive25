@@ -20,9 +20,11 @@ public class FruitController : MonoBehaviour
     private int armyID;
     public int ArmyID => armyID;
 
+    [SerializeField]
+    private PlayerInput playerInput;
+
     private FruitGameMaster fruitGameMaster = null;
 
-    private PlayerInput playerInput;
     private CharacterController controller;
     private Vector2 moveInput;
     private bool isSprintingTriggered;
@@ -42,7 +44,6 @@ public class FruitController : MonoBehaviour
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        playerInput = GetComponent<PlayerInput>();
     }
 
     public void InjectGameMaster(FruitGameMaster gameMaster)
