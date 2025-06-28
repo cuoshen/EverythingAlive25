@@ -574,7 +574,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4874e106442fb4dae606155357d009, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  config: {fileID: 11400000, guid: c3389f44e85b3f6449a7189224d73af5, type: 2}
+  gravity: -9.81
+  terminalVelocity: -50
 --- !u!114 &1030633664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -746,7 +748,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4874e106442fb4dae606155357d009, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  config: {fileID: 11400000, guid: c3389f44e85b3f6449a7189224d73af5, type: 2}
+  gravity: -9.81
+  terminalVelocity: -50
 --- !u!143 &2093296198
 CharacterController:
   m_ObjectHideFlags: 0

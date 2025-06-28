@@ -7,11 +7,7 @@ public class FruitController : MonoBehaviour
 {
 
     [SerializeField]
-    private float moveSpeed = 5f;
-    [SerializeField]
-    private float gravity = -9.81f;
-    [SerializeField]
-    private float terminalVelocity = -50f;
+    private FruitConfig config;
 
     private PlayerInput playerInput;
     private CharacterController controller;
@@ -37,7 +33,7 @@ public class FruitController : MonoBehaviour
         Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
         moveDirection.Normalize();
 
-        Vector3 velocity = moveDirection * moveSpeed;
+        Vector3 velocity = moveDirection * config.MoveSpeed;
 
         // Apply gravity
         if (controller.isGrounded && verticalVelocity < 0)
@@ -46,8 +42,8 @@ public class FruitController : MonoBehaviour
         }
         else
         {
-            verticalVelocity += gravity * Time.deltaTime;
-            verticalVelocity = Mathf.Max(verticalVelocity, terminalVelocity);
+            verticalVelocity += config.Gravity * Time.deltaTime;
+            verticalVelocity = Mathf.Max(verticalVelocity, config.TerminalVelocity);
         }
 
         velocity.y = verticalVelocity;
