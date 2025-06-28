@@ -9,6 +9,8 @@ public class FruitConfig : ScriptableObject
     public float SprintSpeed = 15.0f;
     public float Gravity = -9.81f;
     public float TerminalVelocity = -50f;
+    public float SprintCooldown = 4.0f;
+    public float SprintDuration = 2.0f;
 
     [Header("Effects")]
     public VisualEffectAsset CollisionVfx;

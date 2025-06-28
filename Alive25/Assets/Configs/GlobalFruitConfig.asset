@@ -16,3 +16,7 @@ MonoBehaviour:
   SprintSpeed: 15
   Gravity: -9.81
   TerminalVelocity: -50
+  SprintCooldown: 2
+  SprintDuration: 0.3
+  CollisionVfx: {fileID: 0}
+  CollisionAudio: {fileID: 0}

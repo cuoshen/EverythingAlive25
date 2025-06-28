@@ -19,11 +19,12 @@ public class FruitController : MonoBehaviour
     private PlayerInput playerInput;
     private CharacterController controller;
     private Vector2 moveInput;
-    private bool isSprinting;
+    private bool isSprintingTriggered;
 
     private float verticalVelocity;
 
     private bool isPlayerControlled = true;
+    private double lastSprintTime = 0;
 
     void Awake()
     {
@@ -38,8 +39,8 @@ public class FruitController : MonoBehaviour
         moveAction.canceled += _ => moveInput = Vector2.zero;
 
         InputAction sprintAction = playerInput.actions["Sprint"];
-        sprintAction.performed += _ => isSprinting = true;
-        sprintAction.canceled += _ => isSprinting = false;
+        sprintAction.performed += _ => isSprintingTriggered = true;
+        sprintAction.canceled += _ => isSprintingTriggered = false;
     }
 
     void Update()
@@ -58,7 +59,21 @@ public class FruitController : MonoBehaviour
             fruitTransform.rotation = Quaternion.LookRotation(moveDirection);
         }
 
+        bool isSprinting = false;
+        double timeSinceLastSprintStart = Time.timeAsDouble - lastSprintTime;
+        if (timeSinceLastSprintStart < config.SprintDuration)
+        {
+            isSprinting = true;
+        }
+
+        if (isSprintingTriggered && timeSinceLastSprintStart > config.SprintCooldown)
+        {
+            lastSprintTime = Time.timeAsDouble; // Start a new sprint
+            isSprinting = true;
+        }
+
         float moveSpeed = isSprinting ? config.SprintSpeed : config.MoveSpeed;
+
         Vector3 velocity = moveDirection * moveSpeed;
 
         // Apply gravity
@@ -79,14 +94,19 @@ public class FruitController : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.collider.GetComponent<FruitController>() != null)
+        FruitController otherPlayer = hit.collider.GetComponent<FruitController>();
+        if (otherPlayer != null)
         {
             Debug.Log("Run into another player");
-            PlayVFXAtCollision(hit.point);
+            PlayEffectsAtPlayerCollision(hit.point);
+        }
+        else
+        {
+            PlayEffectsWhenCollideWithWall(hit.point);
         }
     }
 
-    void PlayVFXAtCollision(Vector3 position)
+    private void PlayEffectsAtPlayerCollision(Vector3 position)
     {
         VisualEffectAsset collisionVfx = config.CollisionVfx;
         if (collisionVfx != null)
@@ -99,5 +119,10 @@ public class FruitController : MonoBehaviour
         {
             fruitAudioSource.PlayOneShot(collisionSfx);
         }
+    }
+
+    private void PlayEffectsWhenCollideWithWall(Vector3 position)
+    {
+
     }
 }

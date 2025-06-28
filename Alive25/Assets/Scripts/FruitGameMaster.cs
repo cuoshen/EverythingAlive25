@@ -7,7 +7,7 @@ public class FruitGameMaster : MonoBehaviour
 
     private void OnEnable()
     {
-        ambientAudio?.Play();
+        ambientAudio.Play();
     }
 
     private void Update()
