@@ -67,8 +67,8 @@ public class FruitController : MonoBehaviour
     {
         if (transform.position.y < config.DeathThreshold && isAlive)
         {
-            isPlayerControlled = false;
             fruitGameMaster.ReportFruitDeath(this);
+            isPlayerControlled = false;
             isAlive = false;
         }
 
