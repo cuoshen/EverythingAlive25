@@ -8,10 +8,16 @@ public class FruitController : MonoBehaviour
 
     [SerializeField]
     private float moveSpeed = 5f;
+    [SerializeField]
+    private float gravity = -9.81f;
+    [SerializeField]
+    private float terminalVelocity = -50f;
 
     private PlayerInput playerInput;
     private CharacterController controller;
     private Vector2 moveInput;
+
+    private float verticalVelocity;
 
     void Awake()
     {
@@ -28,10 +34,24 @@ public class FruitController : MonoBehaviour
 
     void Update()
     {
-        Vector3 move = new Vector3(moveInput.x, 0f, moveInput.y);
-        if (move.sqrMagnitude > 1f)
-            move.Normalize();
+        Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
+        moveDirection.Normalize();
 
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        Vector3 velocity = moveDirection * moveSpeed;
+
+        // Apply gravity
+        if (controller.isGrounded && verticalVelocity < 0)
+        {
+            verticalVelocity = -1f; // stick to ground
+        }
+        else
+        {
+            verticalVelocity += gravity * Time.deltaTime;
+            verticalVelocity = Mathf.Max(verticalVelocity, terminalVelocity);
+        }
+
+        velocity.y = verticalVelocity;
+
+        controller.Move(velocity * Time.deltaTime);
     }
 }
