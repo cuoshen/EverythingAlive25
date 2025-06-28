@@ -1,12 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 
 public class FruitController : MonoBehaviour
 {
     [SerializeField]
     private FruitConfig config;
+
+    [SerializeField]
+    private Transform fruitTransform;
+
+    [SerializeField]
+    private AudioSource fruitAudioSource;
 
     private PlayerInput playerInput;
     private CharacterController controller;
@@ -38,6 +46,11 @@ public class FruitController : MonoBehaviour
         moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
         moveDirection.Normalize();
 
+        if (moveDirection != Vector3.zero)
+        {
+            fruitTransform.rotation = Quaternion.LookRotation(moveDirection);
+        }
+
         float moveSpeed = isSprinting ? config.SprintSpeed : config.MoveSpeed;
         Vector3 velocity = moveDirection * moveSpeed;
 
@@ -55,5 +68,30 @@ public class FruitController : MonoBehaviour
         velocity.y = verticalVelocity;
 
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.GetComponent<FruitController>() != null)
+        {
+            Debug.Log("Run into another player");
+            PlayVFXAtCollision(hit.point);
+        }
+    }
+
+    void PlayVFXAtCollision(Vector3 position)
+    {
+        VisualEffectAsset collisionVfx = config.CollisionVfx;
+        if (collisionVfx != null)
+        {
+
+        }
+
+        AudioClip collisionSfx = config.CollisionAudio;
+        if (collisionSfx != null)
+        {
+            fruitAudioSource.clip = collisionSfx;
+            fruitAudioSource.Play();
+        }
     }
 }

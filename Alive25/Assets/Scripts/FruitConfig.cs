@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 [CreateAssetMenu(fileName = "NewFruitConfig", menuName = "Configs/FruitConfig")]
 public class FruitConfig : ScriptableObject
@@ -8,4 +9,8 @@ public class FruitConfig : ScriptableObject
     public float SprintSpeed = 15.0f;
     public float Gravity = -9.81f;
     public float TerminalVelocity = -50f;
+
+    [Header("Effects")]
+    public VisualEffectAsset CollisionVfx;
+    public AudioClip CollisionAudio;
 }
