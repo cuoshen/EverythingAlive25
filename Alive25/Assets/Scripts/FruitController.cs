@@ -23,6 +23,8 @@ public class FruitController : MonoBehaviour
 
     private float verticalVelocity;
 
+    private bool isPlayerControlled = true;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -42,6 +44,11 @@ public class FruitController : MonoBehaviour
 
     void Update()
     {
+        if (!isPlayerControlled)
+        {
+            return;
+        }
+
         Vector3 moveDirection = new Vector3();
         moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
         moveDirection.Normalize();
@@ -90,8 +97,7 @@ public class FruitController : MonoBehaviour
         AudioClip collisionSfx = config.CollisionAudio;
         if (collisionSfx != null)
         {
-            fruitAudioSource.clip = collisionSfx;
-            fruitAudioSource.Play();
+            fruitAudioSource.PlayOneShot(collisionSfx);
         }
     }
 }
