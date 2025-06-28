@@ -18,5 +18,8 @@ MonoBehaviour:
   TerminalVelocity: -50
   SprintCooldown: 2
   SprintDuration: 0.3
+  KnockbackDecay: 20
+  PlayerActionMaps: {fileID: -944628639613478452, guid: d7a6ebcd82989384e89360a5ad0c9a87,
+    type: 3}
   CollisionVfx: {fileID: 0}
   CollisionAudio: {fileID: 0}

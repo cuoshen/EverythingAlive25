@@ -16,6 +16,12 @@ public class FruitController : MonoBehaviour
     [SerializeField]
     private AudioSource fruitAudioSource;
 
+    [SerializeField]
+    private int armyID;
+    public int ArmyID => armyID;
+
+    private FruitGameMaster fruitGameMaster = null;
+
     private PlayerInput playerInput;
     private CharacterController controller;
     private Vector2 moveInput;
@@ -27,9 +33,9 @@ public class FruitController : MonoBehaviour
     public Vector3 CurrentVelocity => currentVelocity;
     private Vector3 lastPosition = new Vector3();
     private Vector3 knockbackVelocity;
-    public float knockbackDecay = 20f; // how fast knockback slows down
 
-    private bool isPlayerControlled = true;
+    private bool isPlayerControlled = false;
+    public bool IsPlayerControlled => isPlayerControlled;
     private double lastSprintTime = 0;
 
     void Awake()
@@ -38,7 +44,12 @@ public class FruitController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
     }
 
-    void OnEnable()
+    public void InjectGameMaster(FruitGameMaster gameMaster)
+    {
+        fruitGameMaster = gameMaster;
+    }
+
+    public void EnablePlayerControl()
     {
         InputAction moveAction = playerInput.actions["Move"];
         moveAction.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
@@ -47,18 +58,24 @@ public class FruitController : MonoBehaviour
         InputAction sprintAction = playerInput.actions["Sprint"];
         sprintAction.performed += _ => isSprintingTriggered = true;
         sprintAction.canceled += _ => isSprintingTriggered = false;
+
+        isPlayerControlled = true;
     }
 
     void Update()
     {
-        if (!isPlayerControlled)
+        if (transform.position.y < config.DeathThreshold)
         {
-            return;
+            isPlayerControlled = false;
+            fruitGameMaster.ReportFruitDeath(this);
         }
 
         Vector3 moveDirection = new Vector3();
-        moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
-        moveDirection.Normalize();
+        if (isPlayerControlled)
+        {
+            moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
+            moveDirection.Normalize();
+        }
 
         if (moveDirection != Vector3.zero)
         {
@@ -101,7 +118,7 @@ public class FruitController : MonoBehaviour
         if (knockbackVelocity.sqrMagnitude > 0.01f)
         {
             controller.Move(knockbackVelocity * Time.deltaTime);
-            knockbackVelocity = Vector3.Lerp(knockbackVelocity, Vector3.zero, knockbackDecay * Time.deltaTime);
+            knockbackVelocity = Vector3.Lerp(knockbackVelocity, Vector3.zero, config.KnockbackDecay * Time.deltaTime);
         }
 
         // Update player velocity based on last frame
