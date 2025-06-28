@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 public class FruitController : MonoBehaviour
 {
-
     [SerializeField]
     private FruitConfig config;
 
@@ -35,7 +34,8 @@ public class FruitController : MonoBehaviour
 
     void Update()
     {
-        Vector3 moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
+        Vector3 moveDirection = new Vector3();
+        moveDirection = new Vector3(moveInput.x, 0f, moveInput.y);
         moveDirection.Normalize();
 
         float moveSpeed = isSprinting ? config.SprintSpeed : config.MoveSpeed;
