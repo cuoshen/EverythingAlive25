@@ -20,5 +20,6 @@ MonoBehaviour:
   SprintDuration: 0.6
   KnockbackDecay: 20
   DeathThreshold: -20
-  CollisionVfx: {fileID: 0}
+  CollisionVfx: {fileID: 4026665142206687700, guid: 0c57b4c5505da3d4f8b6ada2f235c7b8,
+    type: 3}
   CollisionAudio: {fileID: 0}

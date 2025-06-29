@@ -18,6 +18,6 @@ public class FruitConfig : ScriptableObject
     public float DeathThreshold = -20.0f;
 
     [Header("Effects")]
-    public VisualEffectAsset CollisionVfx;
+    public ParticleSystem CollisionVfx;
     public AudioClip CollisionAudio;
 }
