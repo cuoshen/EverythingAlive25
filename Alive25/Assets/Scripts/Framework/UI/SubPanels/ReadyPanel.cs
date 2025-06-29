@@ -4,11 +4,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using MarkFramework;
+using TMPro;
 
 public class ReadyPanel : BasePanel {
 
-	//public Button btnStart;
-	//public Button btnQuit;
+	public bool Player1Ready;
+	public bool Player2Ready;
+	private TextMeshProUGUI Player1ReadyText;
+	private TextMeshProUGUI Player2ReadyText;
+	private bool isBothReady;
 
 	protected override void Awake()
 	{
@@ -19,7 +23,11 @@ public class ReadyPanel : BasePanel {
 
 	// Use this for initialization
 	void Start () {
-
+		Player1Ready = false;
+		Player2Ready = false;
+		isBothReady = false;
+		Player1ReadyText = GetControl<TextMeshProUGUI>("LeftReadyText");
+		Player2ReadyText = GetControl<TextMeshProUGUI> ("RightReadyText");
 		// UIManager.AddCustomEventListener(GetControl<Button>("btnStart"), EventTriggerType.PointerEnter, (data)=>{
 		//     Debug.Log("进入");
 		// });
@@ -40,7 +48,29 @@ public class ReadyPanel : BasePanel {
 
 	// Update is called once per frame
 	void Update () {
+		if ((Player1Ready && Player2Ready) && !isBothReady)
+		{
+			isBothReady = true;
+			Invoke("DelayStartGame",1f);
+		}
 		
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+		    Player1Ready = true;
+		    // 设置为半透明
+			Color color = Player1ReadyText.color;
+			color.a = 1f;
+			Player1ReadyText.color = color;
+		}
+		
+		if (Input.GetKeyDown(KeyCode.Keypad0))
+		{
+		    Player2Ready = true;
+		    // 设置为半透明
+			Color color = Player2ReadyText.color;
+			color.a = 1f;
+			Player2ReadyText.color = color;
+		}
 	}
 
 	public override void ShowMe()
@@ -86,5 +116,12 @@ public class ReadyPanel : BasePanel {
 	public void ClickQuit()
 	{
 		Debug.Log("Quit Game");
+	}
+	
+	public void DelayStartGame()
+	{
+	    UIManager.Instance.HidePanel("ReadyPanel");
+		UIManager.Instance.ShowPanel<InGamePanel>("InGamePanel");
+		GameState.Instance.currentGameType = E_GameStateType.E_InGame;
 	}
 }
