@@ -3,7 +3,12 @@ guid: 47879d77e8104d942ab26e5615f5e792
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stylized_House_Trim
+    second: {fileID: 2100000, guid: 1aee5a39d857aa94eb1fb419a9107744, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
