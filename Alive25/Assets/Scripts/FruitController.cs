@@ -152,10 +152,12 @@ public class FruitController : MonoBehaviour
 
     private void PlayEffectsAtPlayerCollision(Vector3 position)
     {
-        VisualEffectAsset collisionVfx = config.CollisionVfx;
+        ParticleSystem collisionVfx = config.CollisionVfx;
         if (collisionVfx != null)
         {
-
+            ParticleSystem vfxInstance = GameObject.Instantiate(collisionVfx, position, Quaternion.identity);
+            vfxInstance.Play();
+            Destroy(vfxInstance.gameObject, vfxInstance.main.duration + vfxInstance.main.startLifetime.constantMax);
         }
 
         AudioClip collisionSfx = config.CollisionAudio;
