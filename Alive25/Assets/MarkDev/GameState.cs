@@ -14,23 +14,6 @@ public class GameState : SingletonMono<GameState>
     private float PlayerMaxHP = 100;
     private int PlayerMaxEnergy = 5;
     
-    
-    // Start is called before the first frame update
-    // void Start()
-    // {
-        
-    // }
-
-    // FIXME:随机减少生命值
-    void Update()
-    {
-        if(currentGameType == E_GameStateType.E_InGame)
-        {
-            Player1HP -= Random.Range(0.02f, 0.1f);
-            Player2HP -= Random.Range(0.02f, 0.1f);
-        }
-    }
-    
     public float GetPlayerMaxHP()
     {
         return PlayerMaxHP;

@@ -54,6 +54,19 @@ public class FruitGameMaster : MonoBehaviour
             {
                 Debug.Log("Army " + armyID + " has resurrected! Prepare for war!");
             }
+            else
+            {
+                // No more resurrections, game reaches its end
+                GameState globalState = GameState.Instance;
+                if (armyID == 0)
+                {
+                    globalState.Player1HP = 0;
+                }
+                else
+                {
+                    globalState.Player2HP = 0;
+                }
+            }
         }
     }
 }
