@@ -9,6 +9,8 @@ public class InGamePanel : BasePanel {
 
 	private Slider player1Slider;
 	private Slider player2Slider;
+	public PlayerEnergy player1EnergyBar;
+	public PlayerEnergy player2EnergyBar;
 
 	protected override void Awake()
 	{
@@ -36,6 +38,18 @@ public class InGamePanel : BasePanel {
 	// Update is called once per frame
 	void Update () {
 		//TODO:跟新player slider的hp比值；显示结束游戏UI
+		player1Slider.value = GameState.Instance.Player1HP/GameState.Instance.GetPlayerMaxHP();
+		player2Slider.value = GameState.Instance.Player2HP/GameState.Instance.GetPlayerMaxHP();
+		if(GameState.Instance.Player1HP <= 0 || GameState.Instance.Player2HP <= 0)
+		{
+			Debug.Log("Game End");
+		    UIManager.Instance.HidePanel("InGamePanel");
+			UIManager.Instance.ShowPanel<ResultPanel>("ResultPanel");
+			GameState.Instance.currentGameType = E_GameStateType.E_GameEnd;
+		}
+
+		player1EnergyBar.SetPlayerEnergyImg(GameState.Instance.Player1Energy);
+		player2EnergyBar.SetPlayerEnergyImg(GameState.Instance.Player2Energy);
 	}
 
 	public override void ShowMe()
@@ -53,6 +67,14 @@ public class InGamePanel : BasePanel {
 				Debug.Log("btnEnd被点击");
 				UIManager.Instance.HidePanel("InGamePanel");
 				UIManager.Instance.ShowPanel<ResultPanel>("ResultPanel");
+				break;
+			case "btnIncreaseEng":
+				Debug.Log("btnIncreaseEng被点击");
+				if(GameState.Instance.Player1Energy < 5)GameState.Instance.Player1Energy++;
+				break;
+			case "btnReduceEng":
+				Debug.Log("btnReduceEng被点击");
+				if(GameState.Instance.Player1Energy > 0) GameState.Instance.Player1Energy--;
 				break;
 		}
 	}

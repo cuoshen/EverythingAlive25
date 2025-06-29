@@ -4,8 +4,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using MarkFramework;
+using TMPro;
 
 public class ResultPanel : BasePanel {
+	private TextMeshProUGUI Player1WinText;
+	private TextMeshProUGUI Player2WinText;
+
 	protected override void Awake()
 	{
 		//一定不能少 因为需要执行父类的awake来初始化一些信息 比如找控件 加事件监听
@@ -15,13 +19,23 @@ public class ResultPanel : BasePanel {
 
 	// Use this for initialization
 	void Start () {
+		
+		Player1WinText = GetControl<TextMeshProUGUI>("LeftText");
+		Player2WinText = GetControl<TextMeshProUGUI> ("RightText");
+		
 		GameState.Instance.currentGameType = E_GameStateType.E_GameEnd;
-		// UIManager.AddCustomEventListener(GetControl<Button>("btnStart"), EventTriggerType.PointerEnter, (data)=>{
-		//     Debug.Log("进入");
-		// });
-		// UIManager.AddCustomEventListener(GetControl<Button>("btnStart"), EventTriggerType.PointerExit, (data) => {
-		//     Debug.Log("离开");
-		// });
+		if(GameState.Instance.Player1HP <= 0)
+		{
+		    Color color = Player1WinText.color;
+			color.a = 1f;
+			Player1WinText.color = color;
+		}
+		else
+		{
+		    Color color = Player2WinText.color;
+			color.a = 1f;
+			Player2WinText.color = color;
+		}
 	}
 
 	private void Drag(BaseEventData data)
@@ -39,7 +53,13 @@ public class ResultPanel : BasePanel {
 		
 	}
 
-	public override void ShowMe()
+    void OnDisable()
+    {
+		GameState.Instance.Player1HP = GameState.Instance.GetPlayerMaxHP();
+		GameState.Instance.Player2HP = GameState.Instance.GetPlayerMaxHP();
+    }
+
+    public override void ShowMe()
 	{
 		base.ShowMe();
 		//显示面板时 想要执行的逻辑 这个函数 在UI管理器中 会自动帮我们调用
