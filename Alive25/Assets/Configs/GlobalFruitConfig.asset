@@ -22,4 +22,4 @@ MonoBehaviour:
   DeathThreshold: -20
   CollisionVfx: {fileID: 4026665142206687700, guid: 5ce698ae7625d334f89eeb258e431da5,
     type: 3}
-  CollisionAudio: {fileID: 0}
+  CollisionAudio: {fileID: 8300000, guid: 61e320f4f95436847a823d56cebb617c, type: 3}
